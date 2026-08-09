@@ -563,14 +563,15 @@
                     for (let e = 0; e < exts.length; e++) {
                         const ext = exts[e];
                         const path = `背景/${num}.${ext}`;
+                        const encodedPath = encodeURI(path); // 编码中文路径，兼容 Chrome/Firefox
                         totalChecks++;
                         const img = new Image();
                         img.onload = function() {
-                            found.push(path);
+                            found.push(encodedPath);
                             // 找到第一个就立即显示，不用等其他检测完
                             if (!firstShown) {
                                 firstShown = true;
-                                mainContent.style.backgroundImage = `url('${path}')`;
+                                mainContent.style.backgroundImage = `url('${encodedPath}')`;
                             }
                             completedChecks++;
                             checkDone();
@@ -587,7 +588,7 @@
                                 checkDone();
                             }
                         }, 5000);
-                        img.src = path;
+                        img.src = encodedPath;
                     }
                 }
 
