@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <link rel="icon" type="image/png" href="头像/头像.png">
     <link rel="apple-touch-icon" href="头像/头像.png">
     <title>北小Dream的个人网站</title>
@@ -371,21 +372,35 @@
 
         /* ---------- 响应式 ---------- */
         @media (max-width: 600px) {
-            .navbar { padding: 14px 20px; flex-direction: column; align-items: stretch; gap: 12px; }
-            .brand { justify-content: center; font-size: 1.05rem; }
+            .navbar {
+                padding: 10px 14px;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 6px;
+            }
+            .brand { font-size: 0; gap: 0; }
             .brand-avatar { width: 30px; height: 30px; }
-            .nav-links { justify-content: center; gap: 24px; }
-            .nav-links a { font-size: 0.9rem; }
-            .nav-right { justify-content: center; gap: 10px; }
-            .theme-toggle { padding: 6px 14px; font-size: 0.7rem; }
-            .music-control { padding: 4px 10px 4px 8px; font-size: 0.7rem; }
-            .music-info { max-width: 120px; font-size: 0.65rem; }
-            .music-toggle { font-size: 0.9rem; }
+            .nav-links { justify-content: center; gap: 14px; }
+            .nav-links a { font-size: 0.85rem; }
+            .nav-right { justify-content: flex-end; gap: 8px; flex-wrap: nowrap; }
+            .theme-toggle { padding: 5px 10px; font-size: 0.7rem; }
+            .music-control { padding: 4px 8px 4px 6px; font-size: 0.65rem; gap: 6px; }
+            .music-info { max-width: 70px; font-size: 0.6rem; }
+            .music-toggle { font-size: 0.85rem; }
             .main-content { padding: 40px 20px 40px 20px; min-height: 100vh; }
             .profile { padding: 10px 0; }
             .display-name { font-size: 2.6rem; }
             .subtitle { font-size: 0.95rem; }
-            .footer { padding: 14px 20px; flex-direction: column; text-align: center; gap: 6px; font-size: 0.8rem; }
+            .footer {
+                padding: 12px 16px;
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                gap: 8px;
+                font-size: 0.75rem;
+            }
             .works-grid { grid-template-columns: 1fr; }
             .works-section { padding: 24px 18px; }
             .work-item { padding: 20px 16px; }
@@ -397,11 +412,14 @@
         @media (max-width: 400px) {
             .display-name { font-size: 2.0rem; }
             .brand-avatar { width: 26px; height: 26px; }
-            .nav-links { gap: 16px; }
-            .navbar { padding: 12px 16px; }
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 0.78rem; }
+            .navbar { padding: 8px 12px; gap: 4px; }
             .main-content { padding: 30px 16px 30px 16px; min-height: 80vh; }
-            .footer { padding: 12px 16px; }
-            .music-info { max-width: 80px; font-size: 0.6rem; }
+            .footer { padding: 10px 14px; font-size: 0.7rem; }
+            .music-info { max-width: 60px; font-size: 0.55rem; }
+            .music-control { padding: 3px 6px 3px 5px; gap: 4px; }
+            .theme-toggle { padding: 4px 8px; font-size: 0.62rem; }
         }
     </style>
 </head>
