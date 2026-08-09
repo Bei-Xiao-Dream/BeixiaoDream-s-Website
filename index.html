@@ -552,53 +552,45 @@
             // ---------- 背景图：检测 背景/1.jpg, 背景/1.png, 背景/2.jpg ... ----------
             (function loadBackgrounds() {
                 const mainContent = document.getElementById('mainContent');
-                const exts = ['jpg', 'png']; // 只检测 jpg 和 png
+                const exts = ['jpg', 'png'];
                 const found = [];
-                let totalChecks = 0;
-                let completedChecks = 0;
                 let firstShown = false;
 
-                // 检测 1-10 号
-                for (let num = 1; num <= 10; num++) {
-                    for (let e = 0; e < exts.length; e++) {
-                        const ext = exts[e];
-                        const path = `背景/${num}.${ext}`;
-                        const encodedPath = encodeURI(path); // 编码中文路径，兼容 Chrome/Firefox
-                        totalChecks++;
-                        const img = new Image();
-                        img.onload = function() {
-                            found.push(encodedPath);
-                            // 找到第一个就立即显示，不用等其他检测完
-                            if (!firstShown) {
-                                firstShown = true;
-                                mainContent.style.backgroundImage = `url('${encodedPath}')`;
-                            }
-                            completedChecks++;
-                            checkDone();
-                        };
-                        img.onerror = function() {
-                            completedChecks++;
-                            checkDone();
-                        };
-                        // 超时处理（5秒，大文件需要更长时间）
-                        setTimeout(function() {
-                            if (!img.complete) {
-                                img.src = '';
-                                completedChecks++;
-                                checkDone();
-                            }
-                        }, 5000);
-                        img.src = encodedPath;
+                // 串行检测 1-3 号（避免并发请求过多被浏览器中止）
+                function tryLoad(num, extIdx) {
+                    if (num > 3) {
+                        // 全部检测完，如果找到多个随机选一个
+                        if (found.length > 1) {
+                            const pick = found[Math.floor(Math.random() * found.length)];
+                            mainContent.style.backgroundImage = `url('${pick}')`;
+                        }
+                        return;
                     }
-                }
-
-                function checkDone() {
-                    // 全部检测完后，如果找到多个，随机选一个
-                    if (completedChecks >= totalChecks && found.length > 1) {
-                        const pick = found[Math.floor(Math.random() * found.length)];
-                        mainContent.style.backgroundImage = `url('${pick}')`;
+                    // 扩展名检测完毕，换下一个编号
+                    if (extIdx >= exts.length) {
+                        tryLoad(num + 1, 0);
+                        return;
                     }
+                    const ext = exts[extIdx];
+                    const path = `背景/${num}.${ext}`;
+                    const encodedPath = encodeURI(path);
+                    const img = new Image();
+                    img.onload = function() {
+                        found.push(encodedPath);
+                        if (!firstShown) {
+                            firstShown = true;
+                            mainContent.style.backgroundImage = `url('${encodedPath}')`;
+                        }
+                        // 继续检测下一个（收集所有可用背景）
+                        tryLoad(num, extIdx + 1);
+                    };
+                    img.onerror = function() {
+                        // 这个文件不存在，继续检测下一个
+                        tryLoad(num, extIdx + 1);
+                    };
+                    img.src = encodedPath;
                 }
+                tryLoad(1, 0);
             })();
 
             // ---------- 音乐：从 list.js 清单加载 + state.js 状态识别 ----------
