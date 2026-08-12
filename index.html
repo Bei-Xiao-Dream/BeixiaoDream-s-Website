@@ -11,13 +11,16 @@
         /* ========== Minecraft 字体 ========== */
         @font-face {
             font-family: 'Minecraft';
-            src: url('字体/Minecraft%20字体.ttf') format('truetype');
+            src: url('字体/minecraft.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
+            /* 只作用于：ASCII字母数字+标点、中日韩汉字、中文标点、全角字符 */
+            unicode-range: U+0020-007E, U+3000-303F, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF;
         }
 
         /* ========== 全局重置 ========== */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Minecraft', 'Courier New', monospace; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Minecraft', sans-serif; }
 
         :root {
             --text-primary: #1a202c;
@@ -557,7 +560,7 @@
 
     <!-- ===== 页脚 ===== -->
     <footer class="footer">
-        <div><span style="font-family: sans-serif;">©</span> 2026 北小Dream</div>
+        <div>© 2026 北小Dream</div>
         <div><a href="https://space.bilibili.com/3546881609173588" target="_blank" rel="noopener noreferrer">Bilibili @北小Dream</a></div>
     </footer>
 
@@ -739,7 +742,7 @@
 
         // ========== 背景图检测与切换 ==========
         const mainBg = document.getElementById('mainContent');
-        const bgExts = ['jpg', 'png'];
+        const bgExts = ['webp', 'jpg', 'png'];
         let availableBgs = [];
         let curBgIdx = -1;
 
@@ -747,7 +750,7 @@
             availableBgs = [];
             let num = 1;
             function tryNum(n) {
-                if (n > 15) return pickBg();
+                if (n > 20) return pickBg();
                 let extIdx = 0;
                 function tryExt(ei) {
                     if (ei >= bgExts.length) { tryNum(n + 1); return; }
@@ -756,7 +759,8 @@
                     const img = new Image();
                     img.onload = () => {
                         availableBgs.push(enc);
-                        tryExt(ei + 1);
+                        // 找到一个扩展名就跳到下一个编号，不再试其他扩展名
+                        tryNum(n + 1);
                     };
                     img.onerror = () => tryExt(ei + 1);
                     img.src = enc;
@@ -860,7 +864,7 @@
 
         function getCoverUrl(name) {
             const displayName = name.replace(/\.[^.]+$/, '');
-            return '音乐/音乐图片/' + encodeURI(displayName) + '.jpg';
+            return '音乐/音乐图片/' + encodeURI(displayName) + '.webp';
         }
 
         function refreshGrid() {
