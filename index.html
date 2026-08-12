@@ -382,7 +382,13 @@
             border: 1px solid rgba(255,255,255,0.1);
             animation: slideUp 0.4s ease;
         }
-        .video-popup h2 { color: #fff; margin-bottom: 20px; font-size: 1.3rem; }
+        .video-popup h2 { color: #fff; margin-bottom: 20px; font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .video-popup h2 .refresh-btn {
+            border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05);
+            color: #fff; width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
+            font-size: 1rem; transition: background 0.2s, transform 0.2s;
+        }
+        .video-popup h2 .refresh-btn:hover { background: rgba(255,255,255,0.15); transform: rotate(180deg); }
         .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .video-card {
             background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
@@ -613,7 +619,7 @@
     <div class="video-popup" id="videoPopup">
         <div class="video-popup-content">
             <button class="video-popup-close" id="videoPopupClose">✕</button>
-            <h2>🎬 MC推荐视频</h2>
+            <h2><span>🎬 MC推荐视频</span><button class="refresh-btn" id="refreshVideosBtn" title="换一批">🔄</button></h2>
             <div class="video-grid" id="videoGrid"></div>
         </div>
     </div>
@@ -1051,110 +1057,48 @@
         const videoPopupClose = document.getElementById('videoPopupClose');
         const videoGrid = document.getElementById('videoGrid');
 
-        // ========== B站视频信息获取 ==========
-        // 从B站链接中提取BV号
-        function extractBvid(url) {
-            if (typeof url === 'string') {
-                const m = url.match(/(BV[0-9A-Za-z]+)/);
-                if (m) return m[1];
-            }
-            return null;
-        }
-        // 通过B站API获取视频标题和封面（B站API支持CORS）
-        const videoInfoCache = {};
-        async function fetchBiliVideo(url) {
-            const cacheKey = url;
-            if (videoInfoCache[cacheKey]) return videoInfoCache[cacheKey];
-            const defaultInfo = { url: url, title: 'B站视频', cover: '' };
-            const bvid = extractBvid(url);
-            if (!bvid) { videoInfoCache[cacheKey] = defaultInfo; return defaultInfo; }
-            const apiUrl = `https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`;
-
-            try {
-                const res = await fetch(apiUrl);
-                const data = await res.json();
-                if (data && data.code === 0 && data.data) {
-                    let pic = data.data.pic || '';
-                    if (pic && pic.startsWith('http://')) pic = 'https://' + pic.slice(7);
-                    const info = { url: url, title: data.data.title || 'B站视频', cover: pic };
-                    videoInfoCache[cacheKey] = info;
-                    return info;
-                }
-            } catch (e) {
-                // 直接请求失败，尝试代理
-                try {
-                    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
-                    const res2 = await fetch(proxyUrl);
-                    const json = await res2.json();
-                    const data = JSON.parse(json.contents);
-                    if (data && data.code === 0 && data.data) {
-                        let pic = data.data.pic || '';
-                        if (pic && pic.startsWith('http://')) pic = 'https://' + pic.slice(7);
-                        const info = { url: url, title: data.data.title || 'B站视频', cover: pic };
-                        videoInfoCache[cacheKey] = info;
-                        return info;
-                    }
-                } catch (e2) { /* 全部失败 */ }
-            }
-            videoInfoCache[cacheKey] = defaultInfo;
-            return defaultInfo;
-        }
-
         let pickedVideos = null; // 缓存第一次随机选中的视频
         function showVideos() {
             const rawVideos = window.recommendedVideos || [];
-            // 同时兼容字符串（URL）和 {url,title,cover} 对象
-            const urls = rawVideos.map(v => typeof v === 'string' ? v : (v && v.url)).filter(Boolean);
+            // 直接使用完整数据
+            const videos = rawVideos.filter(v => v && v.url);
             videoGrid.innerHTML = '';
 
-            // 第一次点击随机选3条，以后复用
+            // 第一次点击随机取3个，以后复用
             if (!pickedVideos) {
-                const shuffled = [...urls].sort(() => Math.random() - 0.5);
+                const shuffled = [...videos].sort(() => Math.random() - 0.5);
                 pickedVideos = shuffled.slice(0, Math.min(3, shuffled.length));
             }
             const picked = pickedVideos;
 
-            // 先创建占位卡片
-            const cards = [];
-            picked.forEach(url => {
+            if (picked.length === 0) {
+                videoGrid.innerHTML = `<div style="color:#999;text-align:center;padding:40px;">暂无推荐视频，请在 推荐视频.js 中添加</div>`;
+                videoPopup.classList.add('active');
+                return;
+            }
+
+            picked.forEach(video => {
                 const card = document.createElement('a');
                 card.className = 'video-card';
-                card.href = url;
+                card.href = video.url;
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<div class="video-cover"><span style="font-size:2rem;">🎬</span><div class="video-cover-loading">加载中...</div></div>
-                                  <div class="video-title">加载中...</div>`;
+                const coverHtml = video.cover
+                    ? `<img src="${video.cover}" alt="${video.title}" referrerpolicy="no-referrer" onerror="this.parentElement.innerHTML='<span style=&quot;font-size:2rem;&quot;>🎬</span>'">`
+                    : '<span style="font-size:2rem;">🎬</span>';
+                card.innerHTML = `
+                    <div class="video-cover">${coverHtml}</div>
+                    <div class="video-title">${video.title || '推荐视频'}</div>
+                `;
                 videoGrid.appendChild(card);
-                cards.push({ card, url });
             });
             videoPopup.classList.add('active');
-
-            // 异步获取每个视频的标题和封面
-            cards.forEach(async ({ card, url }) => {
-                const info = await fetchBiliVideo(url);
-                const titleEl = card.querySelector('.video-title');
-                const coverEl = card.querySelector('.video-cover');
-                if (titleEl) titleEl.textContent = info.title || '推荐视频';
-                if (coverEl) {
-                    if (info.cover) {
-                        coverEl.innerHTML = '';
-                        const img = document.createElement('img');
-                        img.alt = info.title || '';
-                        // 绕过B站封面防盗链
-                        img.referrerPolicy = 'no-referrer';
-                        img.crossOrigin = 'anonymous';
-                        img.onerror = function () {
-                            coverEl.innerHTML = '<span style="font-size:2rem;">🎬</span>';
-                        };
-                        coverEl.appendChild(img);
-                        img.src = info.cover;
-                    } else {
-                        coverEl.innerHTML = '<span style="font-size:2rem;">🎬</span>';
-                    }
-                }
-            });
         }
         recommendBtn.addEventListener('click', showVideos);
+        document.getElementById('refreshVideosBtn').addEventListener('click', () => {
+            pickedVideos = null; // 清空缓存，重新随机
+            showVideos();
+        });
         videoPopupClose.addEventListener('click', () => videoPopup.classList.remove('active'));
         videoPopup.addEventListener('click', e => { if (e.target === videoPopup) videoPopup.classList.remove('active'); });
 
