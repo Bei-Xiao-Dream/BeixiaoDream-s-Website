@@ -748,33 +748,35 @@
 
         function detectBgs() {
             availableBgs = [];
-            let num = 1;
-            function tryNum(n) {
-                if (n > 20) return pickBg();
-                let extIdx = 0;
-                function tryExt(ei) {
-                    if (ei >= bgExts.length) { tryNum(n + 1); return; }
+            // 立即设置默认背景
+            const defaultBg = encodeURI('背景/1.webp');
+            mainBg.style.backgroundImage = `url('${defaultBg}')`;
+            availableBgs.push(defaultBg);
+            curBgIdx = 0;
+
+            // 并行检测其余背景（不阻塞页面）
+            for (let n = 2; n <= 20; n++) {
+                for (let ei = 0; ei < bgExts.length; ei++) {
                     const path = `背景/${n}.${bgExts[ei]}`;
                     const enc = encodeURI(path);
                     const img = new Image();
                     img.onload = () => {
-                        availableBgs.push(enc);
-                        // 找到一个扩展名就跳到下一个编号，不再试其他扩展名
-                        tryNum(n + 1);
+                        // 避免重复添加同一编号的不同扩展名
+                        const num = parseInt(enc.match(/\/(\d+)\./)[1]);
+                        if (!availableBgs.some(b => b.includes(`/${num}.`))) {
+                            availableBgs.push(enc);
+                        }
                     };
-                    img.onerror = () => tryExt(ei + 1);
                     img.src = enc;
+                    break; // 只试第一个扩展名(webp)，失败就算了
                 }
-                tryExt(extIdx);
             }
-            tryNum(num);
-            function pickBg() {
-                if (availableBgs.length > 0) {
-                    const saved = localStorage.getItem('curBg');
-                    const idx = saved ? parseInt(saved) : -1;
-                    curBgIdx = (idx >= 0 && idx < availableBgs.length) ? idx : 0;
-                    mainBg.style.backgroundImage = `url('${availableBgs[curBgIdx]}')`;
-                }
+
+            // 恢复保存的背景
+            const saved = localStorage.getItem('curBg');
+            if (saved) {
+                const idx = parseInt(saved);
+                if (idx > 0) curBgIdx = idx;
             }
         }
         detectBgs();
