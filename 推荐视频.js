@@ -105,4 +105,44 @@ window.recommendedVideos = [
         title: "直到我遇见她",
         cover: "https://i1.hdslb.com/bfs/archive/c00bdbbb9f7b7eb750c3564f6d113e764caef4fa.jpg"
     },
+    {
+        url: "https://www.bilibili.com/video/BV12cNG6ZEDx/",
+        title: "为什么我还是这么热爱Minecraft",
+        cover: "https://i2.hdslb.com/bfs/archive/c8d5fe00d209e471ccd4ed0434e064818027ceb1.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1Cjwez4EiA/",
+        title: "烂尾了，真的，这次",
+        cover: "https://i0.hdslb.com/bfs/archive/46e4dbabf91bb27f194c3319fc1f5f7d05c3842d.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV14Tf1BHEJn/",
+        title: "没抽哦",
+        cover: "https://i0.hdslb.com/bfs/archive/0767524e86c9f629a70a6b1084e14e343800879b.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1Gvf3BNEhL/",
+        title: "这期烂尾了",
+        cover: "https://i1.hdslb.com/bfs/archive/d2c972a260444e26e43093180e40240814d943e0.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1mdzDBsEUy/",
+        title: "Start Again",
+        cover: "https://i2.hdslb.com/bfs/archive/9ff40b2c3207aa58a0f367da8e4eb10d50a98d77.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1FoivBZEdg/",
+        title: "新年第一，用Beauty And a Beat 清空我的素材库",
+        cover: "https://i1.hdslb.com/bfs/archive/7a17b2ff7122b1978067b68918bc2cec491fa321.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1hXiFBCE5J/",
+        title: "2026我来了",
+        cover: "https://i0.hdslb.com/bfs/archive/c6ba6cf5ad3f23ad3943bc24072234a54f551c58.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1bCLG6xEQs/",
+        title: "方块 友谊 与我们",
+        cover: "https://i0.hdslb.com/bfs/archive/21c0dfaffbb629649124695d3491a4a3fdbec565.jpg"
+    },
 ];
