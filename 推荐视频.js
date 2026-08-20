@@ -111,16 +111,6 @@ window.recommendedVideos = [
         cover: "https://i2.hdslb.com/bfs/archive/c8d5fe00d209e471ccd4ed0434e064818027ceb1.jpg"
     },
     {
-        url: "https://www.bilibili.com/video/BV1Cjwez4EiA/",
-        title: "烂尾了，真的，这次",
-        cover: "https://i0.hdslb.com/bfs/archive/46e4dbabf91bb27f194c3319fc1f5f7d05c3842d.jpg"
-    },
-    {
-        url: "https://www.bilibili.com/video/BV14Tf1BHEJn/",
-        title: "没抽哦",
-        cover: "https://i0.hdslb.com/bfs/archive/0767524e86c9f629a70a6b1084e14e343800879b.jpg"
-    },
-    {
         url: "https://www.bilibili.com/video/BV1Gvf3BNEhL/",
         title: "这期烂尾了",
         cover: "https://i1.hdslb.com/bfs/archive/d2c972a260444e26e43093180e40240814d943e0.jpg"
@@ -144,5 +134,50 @@ window.recommendedVideos = [
         url: "https://www.bilibili.com/video/BV1bCLG6xEQs/",
         title: "方块 友谊 与我们",
         cover: "https://i0.hdslb.com/bfs/archive/21c0dfaffbb629649124695d3491a4a3fdbec565.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV17hBQBqEuP/",
+        title: "月光落空了",
+        cover: "https://i1.hdslb.com/bfs/archive/e0aca633b14a8f0ca280e3fd559606d6e22c9e06.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1Shm2BeEiq/",
+        title: "如此苦涩",
+        cover: "https://i0.hdslb.com/bfs/archive/34c6af1062d9a545e822c8d5da8ecc67b5d05565.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1zMSiB4EU6/",
+        title: "简简单单才会更美好",
+        cover: "https://i2.hdslb.com/bfs/archive/6911fd978a9a21f554a2e807e699ba6ff64a493b.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1MtCSB8EVA/",
+        title: "ITPR+FPBR=?",
+        cover: "https://i2.hdslb.com/bfs/archive/9b5d5a39d11f8df0583accaccd5eb9eb72bd8ac5.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1mtCSBbEN7/",
+        title: "走，去MC里看看",
+        cover: "https://i0.hdslb.com/bfs/archive/f6631d42e99703edd47d35b394278e69fbb561f2.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV11bCSBZEoE/",
+        title: "I Love You So",
+        cover: "https://i2.hdslb.com/bfs/archive/c3b895a305456ee22792adaad9b50e51f31eb2fe.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV195CSBMEoc/",
+        title: "如果结局注定，那我就感受现在",
+        cover: "https://i0.hdslb.com/bfs/archive/12b49bbd68be78ff9b7690c9eb9d39fb73660d83.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1ouCSBrEJ2/",
+        title: "每一帧都是热爱",
+        cover: "https://i0.hdslb.com/bfs/archive/62f73f9a4e8e6cc17a4dbfe7b7d00a44c2193ef8.jpg"
+    },
+    {
+        url: "https://www.bilibili.com/video/BV1ouCSBrEpB/",
+        title: "影像的意义就是把瞬间变成永恒",
+        cover: "https://i0.hdslb.com/bfs/archive/92c44cd31e1009483bb35150c03af33cab5710ba.jpg"
     },
 ];
